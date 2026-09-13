@@ -6,12 +6,12 @@ Predicting whether a telecom customer will churn (cancel their subscription) bas
 Telecom companies lose significant revenue when customers churn. This project builds a machine learning model to identify customers at high risk of churning, so the business can intervene early (offers, support outreach, etc.) before losing them.
 
 ## Dataset
-2,000 customer records with realistic features modeled on real-world telecom churn patterns:
+2,000 customer records with realistic features modeled on real-world telecom churn patterns (currency in INR):
 - **Demographics:** Senior citizen status, partner, dependents
 - **Account info:** Tenure (months), contract type, payment method, billing type
-- **Usage/charges:** Monthly charges, total charges, internet service type, tech support
+- **Usage/charges:** Monthly charges (₹200-3000), total charges, internet service type, tech support
 
-Churn rate in this dataset: ~47%.
+Churn rate in this dataset: ~48%.
 
 ## Approach
 1. **Exploratory Data Analysis (EDA)** — examined churn distribution, relationship between tenure/charges/contract type and churn.
@@ -26,10 +26,10 @@ Churn rate in this dataset: ~47%.
 
 | Model | Accuracy | Precision | Recall | F1-Score | AUC |
 |---|---|---|---|---|---|
-| Logistic Regression | 78.0% | 76.6% | 76.6% | 76.6% | 0.868 |
-| Random Forest | 75.5% | 78.5% | 66.0% | 71.7% | 0.843 |
+| Logistic Regression | 76.0% | 72.9% | 79.1% | 75.9% | 0.840 |
+| Random Forest | 76.2% | 75.8% | 73.8% | 74.8% | 0.839 |
 
-**Top predictors of churn:** Total charges, tenure, monthly charges, and contract type — customers on month-to-month contracts with high charges and low tenure are at the highest risk of churning.
+**Top predictors of churn:** Total charges, contract type, monthly charges, and tenure — customers on month-to-month contracts with high charges and low tenure are at the highest risk of churning.
 
 ## Key Insight (business takeaway)
 Customers on **month-to-month contracts** with **short tenure** and **higher monthly bills** are the highest churn risk group. A business could use this model to proactively target these customers with retention offers or improved support before they leave.

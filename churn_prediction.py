@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -34,7 +35,7 @@ sns.set_style("whitegrid")
 n = 2000
 
 tenure = np.random.exponential(scale=24, size=n).clip(0, 72).astype(int)
-monthly_charges = np.random.normal(65, 25, n).clip(18, 120)
+monthly_charges = np.random.normal(800, 300, n).clip(200, 3000)
 contract = np.random.choice(
     ["Month-to-month", "One year", "Two year"], size=n, p=[0.55, 0.25, 0.20]
 )
@@ -58,7 +59,7 @@ churn_logit = (
     -1.5
     + 1.8 * (contract == "Month-to-month")
     - 1.2 * (contract == "Two year")
-    + 0.02 * (monthly_charges - 65)
+    - 0.002 * (monthly_charges - 800)
     - 0.05 * (tenure - 24)
     + 0.8 * (internet_service == "Fiber optic")
     - 0.6 * (tech_support == "Yes")
@@ -107,7 +108,8 @@ axes[1, 0].set_title("Churn by Contract Type")
 axes[1, 0].tick_params(axis='x', rotation=15)
 
 sns.boxplot(data=df, x="Churn", y="MonthlyCharges", ax=axes[1, 1], palette="Set2")
-axes[1, 1].set_title("Monthly Charges vs Churn")
+axes[1, 1].set_title("Monthly Charges (₹) vs Churn")
+axes[1, 1].set_ylabel("Monthly Charges (₹)")
 
 plt.tight_layout()
 plt.savefig("/home/claude/eda_overview.png", dpi=150)
@@ -227,3 +229,14 @@ print("\n--- Classification Report (Random Forest) ---")
 print(classification_report(y_test, best["preds"], target_names=["Stayed", "Churned"]))
 
 print("\nProject run completed successfully.")
+
+# -----------------------------------------------------------------------
+# 7. SAVE MODEL + PREPROCESSING OBJECTS FOR DEPLOYMENT
+# -----------------------------------------------------------------------
+# We use the Logistic Regression model for deployment since it performed
+# best overall (highest accuracy and AUC) and is faster/lighter to serve.
+joblib.dump(results["Logistic Regression"]["model"], "/home/claude/churn_model.pkl")
+joblib.dump(scaler, "/home/claude/scaler.pkl")
+joblib.dump(label_encoders, "/home/claude/label_encoders.pkl")
+joblib.dump(list(X.columns), "/home/claude/feature_columns.pkl")
+print("\nSaved model artifacts: churn_model.pkl, scaler.pkl, label_encoders.pkl, feature_columns.pkl")

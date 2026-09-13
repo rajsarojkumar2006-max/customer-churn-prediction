@@ -33,8 +33,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     tenure = st.slider("Tenure (months with company)", 0, 72, 12)
-    monthly_charges = st.slider("Monthly Charges ($)", 18.0, 120.0, 65.0)
-    total_charges = st.number_input("Total Charges ($)", min_value=0.0, value=float(tenure * monthly_charges))
+    monthly_charges = st.slider("Monthly Charges (₹)", 200.0, 3000.0, 800.0)
+    total_charges = st.number_input("Total Charges (₹)", min_value=0.0, value=float(tenure * monthly_charges))
     contract = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
     internet_service = st.selectbox("Internet Service", ["DSL", "Fiber optic", "No"])
     tech_support = st.selectbox("Tech Support", ["Yes", "No"])
